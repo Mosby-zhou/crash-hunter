@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: Use Node.js
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v2
         with:
           node-version: 12
 
@@ -28,25 +28,22 @@ jobs:
           npm run build
 
       - name: Use npm
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v2
         with:
           node-version: 12
+          registry-url: 'https://registry.npmjs.org'
       - name: Publish npm
-        run: |
-          npm config set //registry.npmjs.org/:_authToken=${{ secrets.npm_token }}
-          npm publish -registry https://registry.npmjs.org --access public
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
       - name: Use gpr
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v2
         with:
           node-version: 12
+          registry-url: 'https://npm.pkg.github.com'
       - name: Publish gpr
-        run: |
-          name=${GITHUB_REPOSITORY%%/*}
-          npm config set //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
-          npm publish -registry https://npm.pkg.github.com --access public
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
