@@ -6,7 +6,11 @@ export default class BrowserWindowUnhandledRejectionPlugin implements IPlugin {
 
   setup(client: ICrashHunter): void {
     this._handler = (event: PromiseRejectionEvent) => {
-      client.captureMessage(event.reason, {}, 'unhandledrejection');
+      if (typeof event.reason === 'string') {
+        client.captureMessage(event.reason, {}, 'unhandledrejection');
+      } else {
+        client.captureException(event.reason, {});
+      }
     };
 
     window.addEventListener('unhandledrejection', this._handler);

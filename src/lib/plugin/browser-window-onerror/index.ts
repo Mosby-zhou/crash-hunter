@@ -14,7 +14,7 @@ export default class BrowserWindowOnerrorPlugin implements IPlugin {
         client.getLogger().warn('Ignoring cross-domain or eval script error.');
       } else {
         if (typeof messageOrEvent === 'string') {
-          client.captureMessage(messageOrEvent);
+          client.captureMessage(messageOrEvent, {}, 'window.onerror');
         } else {
           client.captureException(messageOrEvent);
         }

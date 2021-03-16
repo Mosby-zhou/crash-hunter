@@ -5,7 +5,7 @@ export default class NodeUnhandledRejectionPlugin implements IPlugin {
   private _handler?: NodeJS.UnhandledRejectionListener;
   setup(client: ICrashHunter): void {
     this._handler = (reason) => {
-      typeof reason === 'string' ? client.captureMessage(reason) : client.captureException(reason);
+      typeof reason === 'string' ? client.captureMessage(reason, {}, 'unhandledRejection') : client.captureException(reason);
       if (!client.getOption().node_config.not_exit_on_unhandled_rejection) {
         client.flush().then(() => process.exit(1));
       }
